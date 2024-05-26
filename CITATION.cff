@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Huerga Espino"
+  given-names: "María"
+- family-names: "Asencio Martín"
+  given-names: "Ana Isabel"
+title: "MaiBee"
+version: 1.0.0
+date-released: 2024-05-31
+url: "https://github.com/mhuergae/MaiBee"
