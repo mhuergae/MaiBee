@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "MaiBee",
+  "version": "1.0",
+  "description": "Scans the web looking for bees",
+  "permissions": [
+    "activeTab",
+    "<all_urls>",
+    "webRequest",
+    "storage",
+    "tabs",
+    "dns"
+
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "191": "honeybee.png"
+    }
+  },
+  "icons": {
+    "191": "honeybee.png"
+  },
+  "background": {
+    "scripts": [
+      "detect.js"
+    ],
+    "persistent": true
+  },
+  "options_ui": {
+    "page": "options.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js", "beesify.js"]
+    }
+  ],
+  "web_accessible_resources": ["honeybee.png"]
+ }

@@ -1,0 +1,63 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Options</title>
+
+    <style>
+        .button {
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition-duration: 0.4s;
+        }
+        
+        #cleanupButton {
+            background-color: #f44336;  
+        }
+
+        #cleanupButton:hover {
+            background-color: #d32f2f;
+        }
+
+        #downloadShady {
+            background-color: #0d9e12; 
+        }
+
+        #downloadShady:hover {
+            background-color: #45a049; 
+        }
+
+        #exportJSONOverview {
+            background-color: #591f9b; 
+            
+        }
+
+        #exportJSONOverview:hover {
+            background-color: #4e2083; 
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Extension Options</h1>
+    <h2>[parentURL : detectedURL]</h2>
+    <button id="cleanupButton" class="button"> Clear Detected URLs</button>
+    <button id="exportJSONOverview" class="button">Export Results to JSON</button>
+    <button id="downloadShady" class="button">Download Shady URLs</button>
+
+    <ul id="detectedUrlsList"></ul>
+    <script src="options.js"></script>
+
+
+
+</body>
+</html>
