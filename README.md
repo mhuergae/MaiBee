@@ -28,9 +28,10 @@ MaiBee is a web browser extension for Firefox designed to detect and analyse sus
 1. Clone this repository:
    ```sh
    git clone https://github.com/mhuergae/MaiBee.git
-2. Open Firefox and navigate to `about:debugging`.
-3. Click on "This Firefox" (or "This Nightly").
-4. Click "Load Temporary Add-on" and select the `manifest.json` file from the `web_extension` directory.
+2. If you want to retrieve AbuseIPDB information as part of the results, change line 195 of options.js and add you API key.
+3. Open Firefox and navigate to `about:debugging`.
+4. Click on "This Firefox" (or "This Nightly").
+5. Click "Load Temporary Add-on" and select the `manifest.json` file from the `web_extension` directory.
 
 ## Usage
 
