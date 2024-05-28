@@ -43,11 +43,15 @@ Use the pop-up menu to control the extension:
 - Click **REMOVE BEES** to stop ad detection on the current tab.
 - Click **BEES in All Tabs** to start ad detection on all open tabs.
 
+![HowMaiBeeLookslike](how-maibee-looks.jpg)
+
 Access the options page by navigating to `about:addons`, clicking on "Extensions", selecting "MaiBee", and then clicking on "Options". Here you can:
 
 - Clear detected URLs.
 - Export results to JSON.
 - Download shady URLs as a text file.
+
+![HowOptionsLookslike](howto-results.jpg)
 
 ## Third-Party Licenses
 
