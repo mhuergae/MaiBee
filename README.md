@@ -53,6 +53,8 @@ Access the options page by navigating to `about:addons`, clicking on "Extensions
 
 ![HowOptionsLookslike](howto-results.jpg)
 
+** As for now, VirusTotal analysis is carried out with an external script due to API request limits. If you want to add VirusTotal analysis, run the bash script vt-scan.sh (Usage: ./vt-scan.sh [API_KEY] [JSON_TO_ANALYSE])
+
 ## Third-Party Licenses
 
 This project includes third-party content that is licensed under different terms. For more details, see the [Third-Party Licenses](third-party-licenses.md) file.
