@@ -27,31 +27,6 @@ function displayDetectedUrls() {
 });
 }
 
-function exportDetectedUrls() {
-    // Retrieve detected URLs from storage
-    browser.storage.local.get('detected_urls').then((result) => {
-        const detectedUrls = result.detected_urls || [];
-        const urlsText = detectedUrls.map(urlObj => `[${urlObj.pageUrl}] : ${urlObj.adUrl}`).join('\n');
-
-        const blob = new Blob([urlsText], { type: 'text/plain' });
-
-        const url = URL.createObjectURL(blob);
-
-        // Create a link element to trigger the download
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'detected_urls.txt'; 
-        document.body.appendChild(link);
-
-        link.click();
-
-        // Clean up
-        URL.revokeObjectURL(url);
-        document.body.removeChild(link);
-    }).catch((error) => {
-        console.error('Error exporting detected URLs:', error);
-    });
-}
 //Whitelist comparison functionalities
 function compareWhitelist() {
    fetch(browser.runtime.getURL('whitelist.json'))
@@ -128,27 +103,6 @@ function compareWithUrlhaus() {
             .catch((error) => {
                 console.log(`Error: ${error}`);
             });
-    }).catch((error) => {
-        console.log(`Error: ${error}`);
-    });
-}
-
-function downloadUrlhaus() {
-    // Retrieve the common_urls to the urlshaus blacklist from the storage to download txt
-    browser.storage.local.get('common_urls').then((result) => {
-        const common_urls = result.common_urls || [];
-        
-        const blob = new Blob([common_urls.join('\n')], {type: 'text/plain'});
-
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'URLhaus_blacklisted.txt';
-
-        // Append the link to the body, click it, and then remove it
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     }).catch((error) => {
         console.log(`Error: ${error}`);
     });
@@ -247,7 +201,7 @@ async function gatherIpAndShodanData(url, checkIPDB) {
 }
 
 
-/****JSON export functionalities****/
+/****JSON export functionalities*, please, include the VirusTotal API key***/
 async function generateJSON() {
     compareWhitelist();
     compareWithUrlhaus();
@@ -259,8 +213,6 @@ async function generateJSON() {
         const common_urls = result.common_urls || [];
         let cspHeader = 'No CSP data';
         let cspHeaderValue = 'No CSP data';
-        let corsHeader = 'No CORS data';
-        let corsHeaderValue = 'No CORS data';
 
         // Gather additional data asynchronously for shady URLs
         const dataPromises = detected_urls.map(async url => {
@@ -274,16 +226,11 @@ async function generateJSON() {
             } catch (error) {
                 console.error('Failed to retrieve CSP data for:', url.adUrl, error);
             }
-            try {
-                const corsData = await browser.storage.local.get(url.adUrl);
-                if (corsData[url.adUrl]) {
-                    corsHeader = corsData[url.adUrl].corsHeader || 'No CORS data';
-                    corsHeaderValue = corsData[url.adUrl].corsHeaderValue || 'No CORS data';
-                }
-            }catch (error) {
-                console.error('Failed to retrieve CORS data for:', url.adUrl, error);
+            //Include the VirusTotal API key below
+            let virusTotal = null;
+            if (shady_urls.includes(url.adUrl)) {
+                virusTotal = await processUrl('your_API_key_here', url.adUrl);
             }
-
             return {
                 parentURL: url.pageUrl,
                 detectedURL: url.adUrl,
@@ -300,8 +247,7 @@ async function generateJSON() {
                 abuseIPDBData: ipData.results.map(r => r.abuseIPDBData),
                 cspHeader: cspHeader,
                 cspHeaderValue: cspHeaderValue,
-                corsHeader: corsHeader,
-                corsHeaderValue: corsHeaderValue
+                VirusTotal: virusTotal
             };
         });
 
@@ -312,10 +258,6 @@ async function generateJSON() {
         let uniqueDetectedURLs = new Set(data.map(item => item.detectedURL)).size;
         let totalShady = data.filter(item => item.isShady === "Yes").length;
         let totalInUrlhaus = data.filter(item => item.isInUrlhaus === "Yes").length;
-
-        // Calculate additional metrics
-        let percentageShady = (totalShady / uniqueDetectedURLs) * 100;
-        let percentageInUrlhaus = (totalInUrlhaus / uniqueDetectedURLs) * 100;
 
         // Calculate most common IP addresses
         let ipCounts = {};
